@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ミーティング予約 | TerraSky</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // テラスカイのコーポレートカラー（近似色）
+                        terrablue: {
+                            50: '#eef8ff',
+                            100: '#d9efff',
+                            200: '#bce4ff',
+                            300: '#8ed5ff',
+                            400: '#59bcff',
+                            500: '#34a1ff',
+                            600: '#1b80f5', // メインブルー
+                            700: '#1467e1',
+                            800: '#1552b6',
+                            900: '#16478f',
+                            950: '#0e2b56',
+                        },
+                        terrablack: '#333333',
+                        terragray: '#f5f5f5',
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #333333;
+            background-color: #f9fafb;
+        }
+        
+        /* ヒーローセクションの背景グラデーション */
+        .hero-bg {
+            background: linear-gradient(135deg, #1b80f5 0%, #0e2b56 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ヒーローセクションの装飾的な図形 */
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -10%;
+            width: 50%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.05);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            right: -10%;
+            width: 40%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.05);
+            transform: rotate(-20deg);
+            pointer-events: none;
+        }
+
+        /* ふわっと浮き上がるアニメーション */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUpAnim 0.8s ease forwards;
+        }
+
+        @keyframes fadeUpAnim {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
+        /* スクロールバーのカスタマイズ */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1b80f5;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1467e1;
+        }
+    </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center">
+                <!-- ロゴのプレースホルダー -->
+                <div class="text-terrablue-600 font-bold text-2xl tracking-tighter">
+                    Terra<span class="text-terrablack">Sky</span>
+                </div>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#about" class="text-gray-600 hover:text-terrablue-600 transition-colors text-sm font-medium">ご案内</a>
+                <a href="#booking" class="text-gray-600 hover:text-terrablue-600 transition-colors text-sm font-medium">ご予約</a>
+                <a href="#contact" class="text-gray-600 hover:text-terrablue-600 transition-colors text-sm font-medium">お問い合わせ</a>
+            </nav>
+            <div class="md:hidden">
+                <!-- モバイルメニューボタン（機能は省略） -->
+                <button type="button" class="text-gray-500 hover:text-gray-900 focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-16">
+        
+        <!-- Hero Section -->
+        <section class="hero-bg text-white py-20 lg:py-32 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center relative z-10">
+                <span class="fade-up inline-block py-1 px-3 rounded-full bg-white/20 text-white text-sm font-semibold tracking-wider mb-6 border border-white/30 backdrop-blur-sm">
+                    ONLINE MEETING
+                </span>
+                <h1 class="fade-up delay-100 text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                    クラウドビジネスの未来を<br class="hidden sm:block" />共に創造しませんか
+                </h1>
+                <p class="fade-up delay-200 text-lg sm:text-xl text-blue-100 mb-10 max-w-2xl mx-auto leading-relaxed">
+                    貴社のデジタルトランスフォーメーション（DX）推進に向けた、最適なソリューションやご提案について、オンラインでお気軽にご相談いただけます。
+                </p>
+                <div class="fade-up delay-300">
+                    <a href="#booking" class="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-terrablue-700 bg-white rounded-full shadow-lg hover:bg-gray-50 hover:scale-105 transition-all duration-300">
+                        ミーティングを予約する
+                        <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About / Value Proposition -->
+        <section id="about" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">オンライン面談でできること</h2>
+                    <div class="w-24 h-1 bg-terrablue-600 mx-auto mt-6 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <!-- Point 1 -->
+                    <div class="bg-terragray rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                        <div class="w-14 h-14 bg-terrablue-100 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-terrablue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4 text-gray-900">DX課題のご相談</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            SalesforceやAWSをはじめとするクラウド導入に関する疑問や、現在のシステム課題について専門家がヒアリングいたします。
+                        </p>
+                    </div>
+
+                    <!-- Point 2 -->
+                    <div class="bg-terragray rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                        <div class="w-14 h-14 bg-terrablue-100 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-terrablue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4 text-gray-900">ソリューションの提案</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            貴社のビジネス要件に合わせた最適なクラウドアーキテクチャや、弊社独自のソリューションを用いた解決策をご提示します。
+                        </p>
+                    </div>
+
+                    <!-- Point 3 -->
+                    <div class="bg-terragray rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                        <div class="w-14 h-14 bg-terrablue-100 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-terrablue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4 text-gray-900">パートナーシップ構築</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            長期的な目線でのプロジェクトの進め方や、両社の協業シナジーについてのディスカッションの場としてご活用ください。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Booking Form Section -->
+        <section id="booking" class="py-20 bg-gray-50 relative">
+            <!-- 背景の装飾 -->
+            <div class="absolute top-0 left-0 w-full h-64 bg-terrablue-600/5 -skew-y-3 transform origin-top-left -z-10"></div>
+            
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl mb-4">ミーティングを予約する</h2>
+                    <p class="text-lg text-gray-600">
+                        ご希望の日時を以下のカレンダーから選択し、予約を完了してください。<br class="hidden sm:block" />
+                        担当者より、折り返しWeb会議用のURLをご案内いたします。
+                    </p>
+                </div>
+
+                <!-- Google Calendar iframe wrapper -->
+                <div class="bg-white rounded-2xl shadow-2xl p-4 sm:p-8 border border-gray-100 relative overflow-hidden">
+                    <!-- 左上の装飾 -->
+                    <div class="absolute top-0 left-0 w-2 h-full bg-terrablue-600"></div>
+                    
+                    <div class="w-full" style="min-height: 600px;">
+                        <!-- ユーザー提供のiframe -->
+                        <!-- Google Calendar Appointment Scheduling begin -->
+                        <iframe src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ04Gjg1ZI6CMsjtrRp1o8TVdWgMxVuMmoKcljvDHvHONGl6XvvaQaVRKC-pYIZ9jCqCtTy7Z9iY?gv=true" style="border: 0; background-color: transparent;" width="100%" height="600" frameborder="0" scrolling="no"></iframe>
+                        <!-- end Google Calendar Appointment Scheduling -->
+                    </div>
+                    
+                    <div class="mt-6 text-sm text-gray-500 text-center flex items-center justify-center">
+                        <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        予約完了後、ご入力いただいたメールアドレス宛に確認メールが送信されます。
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Flow Section -->
+        <section class="py-20 bg-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-gray-900">面談までの流れ</h2>
+                </div>
+
+                <div class="relative">
+                    <!-- Timeline Line -->
+                    <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-blue-100"></div>
+
+                    <div class="space-y-12">
+                        <!-- Step 1 -->
+                        <div class="relative flex flex-col md:flex-row items-center justify-between">
+                            <div class="md:w-5/12 mb-6 md:mb-0 text-center md:text-right pr-0 md:pr-8">
+                                <h4 class="text-xl font-bold text-gray-900 mb-2">日時選択</h4>
+                                <p class="text-gray-600">上記カレンダーよりご希望の日時を選択し、必要事項を入力して予約を確定してください。</p>
+                            </div>
+                            <div class="absolute left-1/2 transform -translate-x-1/2 -translate-y-4 md:translate-y-0 w-12 h-12 bg-terrablue-600 rounded-full border-4 border-white flex items-center justify-center shadow text-white font-bold text-lg z-10">1</div>
+                            <div class="md:w-5/12 pl-0 md:pl-8"></div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="relative flex flex-col md:flex-row items-center justify-between">
+                            <div class="md:w-5/12 mb-6 md:mb-0"></div>
+                            <div class="absolute left-1/2 transform -translate-x-1/2 -translate-y-4 md:translate-y-0 w-12 h-12 bg-terrablue-600 rounded-full border-4 border-white flex items-center justify-center shadow text-white font-bold text-lg z-10">2</div>
+                            <div class="md:w-5/12 text-center md:text-left pl-0 md:pl-8">
+                                <h4 class="text-xl font-bold text-gray-900 mb-2">URLご案内</h4>
+                                <p class="text-gray-600">予約完了後、担当者よりWeb会議ツール（Google Meet, Zoom等）のURLをメールにてお送りします。</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="relative flex flex-col md:flex-row items-center justify-between">
+                            <div class="md:w-5/12 mb-6 md:mb-0 text-center md:text-right pr-0 md:pr-8">
+                                <h4 class="text-xl font-bold text-gray-900 mb-2">オンライン面談</h4>
+                                <p class="text-gray-600">お時間になりましたら、ご案内したURLにアクセスしてください。担当者がお待ちしております。</p>
+                            </div>
+                            <div class="absolute left-1/2 transform -translate-x-1/2 -translate-y-4 md:translate-y-0 w-12 h-12 bg-terrablue-600 rounded-full border-4 border-white flex items-center justify-center shadow text-white font-bold text-lg z-10">3</div>
+                            <div class="md:w-5/12 pl-0 md:pl-8"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-900 text-gray-300 py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <div class="text-white font-bold text-2xl tracking-tighter mb-4">
+                    Terra<span class="text-gray-400">Sky</span>
+                </div>
+                <p class="text-sm text-gray-400 mb-4 max-w-sm">
+                    クラウドの力で、お客様のビジネスに革新を。私たちはSalesforceをはじめとするクラウドソリューションのプロフェッショナル集団です。
+                </p>
+                <div class="flex space-x-4">
+                    <!-- Social icons placeholders -->
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <span class="sr-only">Twitter</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"/></svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <span class="sr-only">Facebook</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"/></svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="md:text-right">
+                <h4 class="text-white font-bold mb-4">お問い合わせ</h4>
+                <p class="text-sm text-gray-400 mb-2">ご予約に関するご質問や、その他のお問い合わせはこちら</p>
+                <a href="mailto:info@terrasky.co.jp" class="text-terrablue-400 hover:text-terrablue-300 transition-colors">info@terrasky.co.jp</a>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-gray-800 text-sm text-gray-500 text-center">
+            &copy; 2026 TerraSky Co., Ltd. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // スムーススクロールの実装
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // スクロール時のヘッダーの影の制御（オプション）
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 0) {
+                header.classList.add('shadow-md');
+                header.classList.remove('shadow-sm');
+            } else {
+                header.classList.add('shadow-sm');
+                header.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body>
+</html>
